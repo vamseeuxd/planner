@@ -15,4 +15,5 @@ export const routes: Routes = [
   { canActivate: [authGuard], data:{title:'Credit-Cards'}, path: 'credit-cards', loadComponent: () => import('./credit-cards/credit-cards').then( (m) => m.CreditCards ), },
   { canActivate: [authGuard], data:{title:'Chit-Fund'}, path: 'chit-fund', loadComponent: () => import('./chit-fund/chit-fund').then( (m) => m.ChitFund ), },
   { canActivate: [authGuard], data:{title:'Loans'}, path: 'loans', loadComponent: () => import('./loans/loans').then( (m) => m.Loans ), },
+  { canActivate: [authGuard], data:{title:'Bank-Accounts'}, path: 'bank-accounts', loadComponent: () => import('./bank-accounts/bank-accounts').then( (m) => m.BankAccounts ), },
 ];
