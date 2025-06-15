@@ -9,7 +9,7 @@
       <mat-list-item [routerLinkActive]="'active'" [routerLink]="['settings']" routerLinkActive="router-link-active" >Setting</mat-list-item>
       <mat-list-item [routerLinkActive]="'active'" [routerLink]="['account']" routerLinkActive="router-link-active" >Account</mat-list-item>
       <mat-list-item [routerLinkActive]="'active'" [routerLink]="['login']" routerLinkActive="router-link-active" >Login</mat-list-item>
-      <mat-list-item>Logout</mat-list-item>
+      <mat-list-item (click)="logout()">Logout</mat-list-item>
     </mat-list>
   </mat-sidenav>
   <mat-sidenav-content>

@@ -22,13 +22,14 @@ $my-theme: mat.m2-define-light-theme((
 
 :root {
   /* --mat-sys-background: #7d7976; */
-  --mat-sys-corner-medium: 32px;
+  /* --mat-sys-corner-medium: 32px;
   --mat-sys-corner-extra-small: 32px;
   --mat-form-field-container-height: 32px;
   --mat-form-field-filled-with-label-container-padding-top: 0px;
   --mat-form-field-filled-with-label-container-padding-bottom: 0px;
-  --mat-form-field-container-vertical-padding: 6px;
+  --mat-form-field-container-vertical-padding: 6px; */
   --dashboard-card-margin: 12px;
+  --dashboard-corner-extra-small: 32px;
   --dashboard-card-title-bg-color: #fff8f8e6;
   --dashboard-card-title-color: #2b2b2b;
 }

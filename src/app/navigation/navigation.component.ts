@@ -5,6 +5,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink, RouterLinkActive, RouterModule, RoutesRecognized } from '@angular/router';
+import { AuthService } from '../auth/auth';
 
 @Component({
   selector: 'app-navigation',
@@ -25,6 +26,7 @@ export class NavigationComponent {
 
   title = 'Planner';
   router = inject(Router);
+  authService = inject(AuthService);
 
   ngOnInit() {
     this.router.events.subscribe((data) => {
@@ -34,4 +36,10 @@ export class NavigationComponent {
       }
     });
   }
+
+  async logout(): Promise<void> {
+    await this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+
 }

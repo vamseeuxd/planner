@@ -1,0 +1,25 @@
+.login-card {
+  max-width: 400px;
+  padding: 1rem;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1rem 0;
+  color: #757575;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #757575;
+  }
+}
+
+.signup-link,
+.forgot-password {
+  text-align: center;
+  margin-top: 1rem;
+}

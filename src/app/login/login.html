@@ -1,1 +1,80 @@
-<p>login works!</p>
+<div class="p-6">
+  <mat-card class="login-card">
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline" class="w-100 mb-10 mt-10">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            formControlName="email"
+            type="email"
+            placeholder="Enter your email"
+          />
+          <mat-error *ngIf="loginForm.get('email')?.hasError('required')"
+            >Email is required</mat-error
+          >
+          <mat-error *ngIf="loginForm.get('email')?.hasError('email')"
+            >Invalid email format</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100 mb-10">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            formControlName="password"
+            [type]="hidePassword ? 'password' : 'text'"
+            placeholder="Enter your password"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hidePassword = !hidePassword"
+            type="button"
+          >
+            <mat-icon
+              >{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon
+            >
+          </button>
+          <mat-error *ngIf="loginForm.get('password')?.hasError('required')"
+            >Password is required</mat-error
+          >
+          <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')"
+            >Password must be at least 6 characters</mat-error
+          >
+        </mat-form-field>
+
+        <div class="forgot-password mb-10">
+          <a routerLink="/reset-password">Forgot Password?</a>
+        </div>
+
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="loginForm.invalid"
+          class="w-100 mb-10"
+        >
+          Login
+        </button>
+      </form>
+
+      <div class="divider">
+        <span>OR</span>
+      </div>
+
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="loginWithGoogle()"
+        class="w-100 mb-10"
+      >
+        <mat-icon>google</mat-icon> Sign in with Google
+      </button>
+
+      <div class="signup-link">
+        <p>Don't have an account? <a routerLink="/signup">Sign up</a></p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

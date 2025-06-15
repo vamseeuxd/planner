@@ -1,11 +1,68 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { AuthService } from '../auth/auth';
 
 @Component({
   selector: 'app-login',
-  imports: [],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    RouterModule,
+    MatSnackBarModule,
+  ],
   templateUrl: './login.html',
   styleUrl: './login.scss'
 })
 export class Login {
+loginForm: FormGroup;
+  errorMessage: string | null = null;
+  hidePassword = true;
 
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+    });
+  }
+
+  async onSubmit(): Promise<void> {
+    if (this.loginForm.invalid) {
+      return;
+    }
+
+    const { email, password } = this.loginForm.value;
+    try {
+      await this.authService.loginWithEmail(email, password);
+      this.router.navigate(['/dashboard']);
+    } catch (error: any) {
+      this.snackBar.open(error.message, 'Close', { duration: 5000 });
+    }
+  }
+
+  async loginWithGoogle(): Promise<void> {
+    try {
+      await this.authService.loginWithGoogle();
+      this.router.navigate(['/dashboard']);
+    } catch (error: any) {
+      this.snackBar.open(error.message, 'Close', { duration: 5000 });
+    }
+  }
 }
