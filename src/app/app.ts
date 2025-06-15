@@ -13,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
+import { NavigationComponent } from './navigation/navigation.component';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +27,7 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     MatListModule,
     MatSlideToggleModule,
+    NavigationComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './app.scss',
