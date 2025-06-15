@@ -14,16 +14,14 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      <button
-        type="button"
-        aria-label="Toggle sidenav"
-        matIconButton
-        (click)="drawer.toggle()">
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-      </button>
-      <span>Planner</span>
+      <div class="h-box w-100">
+        <button type="button" aria-label="Toggle sidenav" matIconButton (click)="drawer.toggle()"> <mat-icon aria-label="Side nav toggle icon">menu</mat-icon> </button>
+        <span>{{title}}</span>
+        <button [routerLinkActive]="'hide'" class="ms-auto" [routerLink]="['dashboard']" matIconButton> <mat-icon>home</mat-icon> </button>
+      </div>
     </mat-toolbar>
     <!-- Add Content Here -->
+     <!-- <pre>{{this.route.snapshot.data|json}}</pre> -->
     <ng-content></ng-content>
 
   </mat-sidenav-content>

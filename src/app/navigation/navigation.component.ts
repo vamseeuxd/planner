@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterLinkActive, RouterModule, RoutesRecognized } from '@angular/router';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-navigation',
@@ -18,6 +19,21 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     MatIconModule,
     RouterLink,
     RouterLinkActive,
+    RouterModule,
+    JsonPipe,
   ]
 })
-export class NavigationComponent {}
+export class NavigationComponent {
+
+  title = 'Planner';
+  router = inject(Router);
+
+  ngOnInit() {
+    this.router.events.subscribe((data) => {
+      if (data instanceof RoutesRecognized) {
+        const _data:any = data.state.root.firstChild?.data
+        this.title = _data.title;
+      }
+    });
+  }
+}
