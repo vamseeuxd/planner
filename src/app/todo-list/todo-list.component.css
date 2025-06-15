@@ -1,0 +1,75 @@
+.container {
+  padding: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.toolbar-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.form-card, .tree-card {
+  margin: 16px 0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-field {
+  width: 100%;
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.todo-tree {
+  margin-top: 16px;
+}
+
+.tree-node {
+  transition: all 0.3s ease;
+  padding: 8px 0;
+}
+
+.tree-node:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.node-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.node-details {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.node-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 4px;
+}
+
+mat-icon-button {
+  transition: transform 0.2s ease;
+}
+
+mat-icon-button:hover {
+  transform: scale(1.1);
+}
+
+.hidden {
+  display: none;
+}
