@@ -1,4 +1,155 @@
-/* You can add global styles to this file, and also import other style files */
+/* @use '@angular/material' as mat;
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@include mat.strong-focus-indicators();
+
+$my-primary: mat.m2-define-palette(mat.$m2-red-palette, 500);
+$my-accent: mat.m2-define-palette(mat.$m2-pink-palette, A200, A100, A400);
+
+
+$my-theme: mat.m2-define-light-theme((
+ color: (
+   primary: $my-primary,
+   accent: $my-accent,
+ )
+));
+
+@include mat.all-component-themes($my-theme);
+@include mat.strong-focus-indicators-theme($my-theme); */
+
+/* You can add global styles to this file, and also import other style files */
+@use "@angular/material" as mat;
+@use "sass:math";
+
+:root {
+  /* --mat-sys-background: #7d7976; */
+  --mat-sys-corner-medium: 32px;
+  --mat-sys-corner-extra-small: 32px;
+  --mat-form-field-container-height: 32px;
+  --mat-form-field-filled-with-label-container-padding-top: 0px;
+  --mat-form-field-filled-with-label-container-padding-bottom: 0px;
+  --mat-form-field-container-vertical-padding: 6px;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: var(--mat-sys-background);
+  overflow: hidden;
+}
+
+.mat-mdc-card-header {
+  padding: 10px 16px 0 !important;
+}
+
+@for $i from 0 through 24 {
+  .mat-mdc-card-outlined.mat-elevation-z#{$i},
+  .mat-mdc-card.mat-elevation-z#{$i},
+  .mat-elevation-z#{$i} {
+    @include mat.elevation($i);
+  }
+}
+
+.avatar {
+  background-size: cover;
+  border-radius: 2.5rem;
+  width: 2.5rem;
+}
+
+.h-box {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+}
+.v-box {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+}
+
+@for $i from 0 through 40 {
+  .fs-#{$i} {
+    font-size: math.div($i, 10) + rem !important;
+    line-height: math.div($i, 10) + rem !important;
+  }
+  .m-#{$i} {
+    margin: math.div($i, 10) + rem !important;
+  }
+  .ms-#{$i} {
+    margin-left: math.div($i, 10) + rem !important;
+  }
+  .me-#{$i} {
+    margin-right: math.div($i, 10) + rem !important;
+  }
+  .mt-#{$i} {
+    margin-top: math.div($i, 10) + rem !important;
+  }
+  .mb-#{$i} {
+    margin-bottom: math.div($i, 10) + rem !important;
+  }
+  .mx-#{$i} {
+    margin-left: math.div($i, 10) + rem !important;
+    margin-right: math.div($i, 10) + rem !important;
+  }
+  .my-#{$i} {
+    margin-top: math.div($i, 10) + rem !important;
+    margin-bottom: math.div($i, 10) + rem !important;
+  }
+
+  .p-#{$i} {
+    padding: math.div($i, 10) + rem !important;
+  }
+  .ps-#{$i} {
+    padding-left: math.div($i, 10) + rem !important;
+  }
+  .pe-#{$i} {
+    padding-right: math.div($i, 10) + rem !important;
+  }
+  .pt-#{$i} {
+    padding-top: math.div($i, 10) + rem !important;
+  }
+  .pb-#{$i} {
+    padding-bottom: math.div($i, 10) + rem !important;
+  }
+  .px-#{$i} {
+    padding-left: math.div($i, 10) + rem !important;
+    padding-right: math.div($i, 10) + rem !important;
+  }
+  .py-#{$i} {
+    padding-top: math.div($i, 10) + rem !important;
+    padding-bottom: math.div($i, 10) + rem !important;
+  }
+}
+
+.ms-auto {
+  margin-left: auto !important;
+}
+.me-auto {
+  margin-right: auto !important;
+}
+.mx-auto {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+mat-list-item:active,
+mat-list-item:hover {
+  background-color: #ffc0cb4f;
+  border-radius: var(--mat-sys-corner-extra-small);
+}
+
+.mat-mdc-card-content {
+  padding: 0 8px;
+}
+
+.mat-mdc-text-field-wrapper {
+  background-color: var(--mat-sys-surface-variant) !important;
+  border-radius: var(--mat-sys-corner-extra-small) !important;
+}
+
+.mat-mdc-form-field-subscript-wrapper {
+  display: none !important;
+}

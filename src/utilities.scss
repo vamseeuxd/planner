@@ -1,0 +1,56 @@
+$spacings: (
+  'm': 'margin',
+  'p': 'padding'
+);
+
+$directions: (
+  's': 'left',
+  'e': 'right',
+  't': 'top',
+  'b': 'bottom',
+  'x': ('left', 'right'),
+  'y': ('top', 'bottom')
+);
+
+@mixin generate-spacing($type, $prop, $dir: null) {
+  @for $i from 0 through 40 {
+    $value: ($i / 10) + rem;
+    
+    @if $dir {
+      @if type-of($dir) == list {
+        .#{$type}-#{$i} {
+          @each $d in $dir {
+            #{$prop}-#{$d}: $value;
+          }
+        }
+      } @else {
+        .#{$type}-#{$i} {
+          #{$prop}-#{$dir}: $value;
+        }
+      }
+    } @else {
+      .#{$type}-#{$i} {
+        #{$prop}: $value;
+      }
+    }
+  }
+}
+
+// Font size utilities
+@for $i from 0 through 40 {
+  .fs-#{$i} {
+    font-size: ($i / 10) + rem;
+    line-height: ($i / 10) + rem;
+  }
+}
+
+// Spacing utilities
+@each $type, $prop in $spacings {
+  // Generate base spacing classes (m, p)
+  @include generate-spacing($type, $prop);
+  
+  // Generate directional spacing classes (ms, me, mt, mb, mx, my, etc.)
+  @each $dir-key, $dir-value in $directions {
+    @include generate-spacing($type + $dir-key, $prop, $dir-value);
+  }
+}
