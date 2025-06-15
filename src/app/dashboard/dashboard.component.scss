@@ -1,0 +1,39 @@
+:host {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  height: calc(100vh - 65px);
+  justify-content: space-around;
+  .dashboard-card {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    position: relative;
+    border-radius: var(--mat-sys-corner-extra-small);
+    .dashboard-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      border-radius: var(--mat-sys-corner-extra-small);
+    }
+    .dashboard-card-title {
+      position: absolute;
+      left: 0px;
+      right: 0px;
+      bottom: 0px;
+      display: flex;
+      background-color: var(--dashboard-card-title-bg-color);
+      justify-content: center;
+      align-items: center;
+      font-size: 1rem;
+      font-weight: bold;
+      height: var(--mat-sys-corner-extra-small);
+      border-bottom-left-radius: var(--mat-sys-corner-extra-small);
+      border-bottom-right-radius: var(--mat-sys-corner-extra-small);
+      color: var(--dashboard-card-title-color);
+    }
+  }
+}

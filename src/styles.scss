@@ -28,6 +28,8 @@ $my-theme: mat.m2-define-light-theme((
   --mat-form-field-filled-with-label-container-padding-top: 0px;
   --mat-form-field-filled-with-label-container-padding-bottom: 0px;
   --mat-form-field-container-vertical-padding: 6px;
+  --dashboard-card-title-bg-color: #fff8f8c2;
+  --dashboard-card-title-color: #2b2b2b;
 }
 
 html,
@@ -137,8 +139,10 @@ body {
 }
 
 mat-list-item:active,
+mat-list-item.active,
 mat-list-item:hover,
 .mdc-list-item:active,
+.mdc-list-item.active,
 .mdc-list-item:hover {
   background-color: #ffc0cb4f !important;
   border-radius: var(--mat-sys-corner-extra-small);
@@ -158,4 +162,8 @@ mat-list-item:hover,
 }
 .mat-drawer-content {
   overflow: hidden !important;
+}
+.mdc-list-item:focus::before {
+  background-color: inherit !important;
+  opacity: inherit !important;
 }

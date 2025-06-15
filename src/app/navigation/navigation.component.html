@@ -5,9 +5,11 @@
       [opened]="false">
     <mat-toolbar>Planner</mat-toolbar>
     <mat-list>
-      <mat-list-item>Link 1</mat-list-item>
-      <mat-list-item>Link 2</mat-list-item>
-      <mat-list-item>Link 3</mat-list-item>
+      <mat-list-item [routerLinkActive]="'active'" [routerLink]="['dashboard']" routerLinkActive="router-link-active" >Dashboard</mat-list-item>
+      <mat-list-item [routerLinkActive]="'active'" [routerLink]="['settings']" routerLinkActive="router-link-active" >Setting</mat-list-item>
+      <mat-list-item [routerLinkActive]="'active'" [routerLink]="['account']" routerLinkActive="router-link-active" >Account</mat-list-item>
+      <mat-list-item [routerLinkActive]="'active'" [routerLink]="['login']" routerLinkActive="router-link-active" >Login</mat-list-item>
+      <mat-list-item>Logout</mat-list-item>
     </mat-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -22,9 +24,7 @@
       <span>Planner</span>
     </mat-toolbar>
     <!-- Add Content Here -->
-    <div class="pe-10">
-      <ng-content></ng-content>
-    </div>
+    <ng-content></ng-content>
 
   </mat-sidenav-content>
 </mat-sidenav-container>
