@@ -2,8 +2,7 @@
   display: flex;
   max-height: calc(100vh - 65px);
   flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-end;
+  justify-content: flex-start;
   .dashboard-card {
     display: inline-block;
     width: 100px;
@@ -28,7 +27,7 @@
       background-color: var(--dashboard-card-title-bg-color);
       justify-content: center;
       align-items: center;
-      font-size: 1rem;
+      font-size: 0.8rem;
       font-weight: bold;
       height: var(--mat-sys-corner-extra-small);
       border-bottom-left-radius: var(--mat-sys-corner-extra-small);
