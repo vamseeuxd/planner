@@ -4,8 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
-import { ActivatedRoute, Router, RouterLink, RouterLinkActive, RouterModule, RoutesRecognized } from '@angular/router';
-import { JsonPipe } from '@angular/common';
+import { Router, RouterLink, RouterLinkActive, RouterModule, RoutesRecognized } from '@angular/router';
 
 @Component({
   selector: 'app-navigation',
@@ -20,7 +19,6 @@ import { JsonPipe } from '@angular/common';
     RouterLink,
     RouterLinkActive,
     RouterModule,
-    JsonPipe,
   ]
 })
 export class NavigationComponent {
