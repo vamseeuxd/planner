@@ -4,6 +4,10 @@
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
+  "background_color": "#fff8f8",
+  "theme_color": "#fff8f8",
+  "orientation": "portrait",
+  "description": "A simple planner app to help you organize your expenses and incomes.",
   "icons": [
     {
       "src": "icons/icon-72x72.png",
@@ -53,5 +57,17 @@
       "type": "image/png",
       "purpose": "maskable any"
     }
-  ]
+  ],
+  "shortcuts": [
+    { "name": "Dashboard", "url": "/dashboard" },
+    { "name": "Settings", "url": "/settings" },
+    { "name": "Account", "url": "/account" },
+    { "name": "Login", "url": "/login" },
+    { "name": "Expenses", "url": "/expenses" },
+    { "name": "Incomes", "url": "/incomes" },
+    { "name": "Credit Cards", "url": "/credit-cards" },
+    { "name": "Chit Fund", "url": "/chit-fund" },
+    { "name": "Loans", "url": "/loans" }
+  ],
+  "display_override": ["window-controls-overlay", "standalone", "browser"]
 }
