@@ -1,6 +1,18 @@
 <div class="p-6">
   <mat-card class="login-card">
     <mat-card-content>
+      @if(authService.user$ | async; as user) {
+      <div class="user-info">
+        <!-- <img [src]="user.photoURL" alt="User Photo" class="user-photo" /> -->
+        <img src="https://lh3.googleusercontent.com/a/ACg8ocKDmfgW-E6fS-xirohhwIiU_UFDk38d5rtnsxogn1vmn61903I=s96-c" alt="User Photo" class="user-photo mat-elevation-z4" />
+        <h2 class="p-0 m-0 mb-8">Welcome, {{ user.displayName || 'User' }}!</h2>
+        <p class="p-0 m-0 mb-8">Email: {{ user.email }}</p>
+        <p *ngIf="user.phoneNumber" class="p-0 m-0 mb-8">Phone: {{ user.phoneNumber }}</p>
+        <button mat-raised-button color="warn" (click)="authService.logout()">
+          Logout
+        </button>
+      </div>
+      } @else {
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <mat-form-field appearance="outline" class="w-100 mb-10 mt-10">
           <mat-label>Email</mat-label>
@@ -75,6 +87,7 @@
       <div class="signup-link">
         <p>Don't have an account? <a routerLink="/signup">Sign up</a></p>
       </div>
+      }
     </mat-card-content>
   </mat-card>
 </div>

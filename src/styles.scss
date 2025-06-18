@@ -185,3 +185,18 @@ mat-list-item:hover,
 .hide{
   display: none !important;
 }
+.user-photo {
+  display: inline-block;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+}
+
+.user-info{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
