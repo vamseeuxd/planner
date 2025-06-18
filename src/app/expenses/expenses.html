@@ -1,1 +1,22 @@
-<p>expenses works!</p>
+<mat-list
+  role="list"
+  class="mx-3"
+  style="max-height: calc(100vh - 80px); overflow-y: auto"
+>
+  @for (item of expenses; track item.name) {
+  <mat-list-item role="listitem" style="height: auto !important;border-bottom: 1px solid #e0c4c4;">
+    <div class="h-box w-100">
+      <div class="v-box w-100">
+        <span class="fs-12 mt-8">{{item.name}}</span>
+        <span style="color: blueviolet;" class="fs-9 mt-4 mb-8">{{item.date | date:'dd-MMM-yyyy'}}</span>
+      </div>
+      <div class="ms-auto fs-12" style="display: flex;align-items: center;color: green;">{{item.amount|currency:'INR'}}</div>
+      <mat-icon>more_vert</mat-icon>
+      <!-- <button matIconButton class="ms-auto">
+      </button> -->
+    </div>
+  </mat-list-item>
+  } @empty {
+  <li>There are no items.</li>
+  }
+</mat-list>
