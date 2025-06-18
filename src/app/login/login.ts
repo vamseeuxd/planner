@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -14,6 +14,7 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from '../auth/auth';
+import { DialogService } from '../confirmation-dialog/confirmation-dialog.service';
 
 @Component({
   selector: 'app-login',
@@ -36,7 +37,7 @@ export class Login {
   loginForm: FormGroup;
   errorMessage: string | null = null;
   hidePassword = true;
-
+  private dialogService = inject(DialogService);
 
   constructor(
     private fb: FormBuilder,
@@ -48,9 +49,22 @@ export class Login {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
-    this.authService.user$.subscribe((user) => {
-      console.log(user);
-    });
+  }
+  logout() {
+    const sub = this.dialogService
+      .confirm({
+        title: 'Logout Confirm',
+        message: 'Are you sure you want to logout?',
+        confirmText: 'Yes',
+        cancelText: 'No',
+      })
+      .subscribe(async (result) => {
+        if (result) {
+          await this.authService.logout();
+          this.router.navigate(['/login']);
+        }
+        sub.unsubscribe();
+      });
   }
 
   async onSubmit(): Promise<void> {
