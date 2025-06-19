@@ -13,6 +13,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Firestore, collection, collectionData, addDoc, updateDoc, deleteDoc, doc, setDoc, Timestamp } from '@angular/fire/firestore';
 import { DialogService } from '../confirmation-dialog/confirmation-dialog.service';
 import { LoaderService } from '../confirmation-dialog/loader.service';
+import { AuthService } from '../auth/auth';
+import { User } from '@angular/fire/auth';
 
 // Constants for hardcoded values
 const CONSTANTS = {
@@ -161,6 +163,7 @@ export class ExpensesComponent {
   bottomSheet = inject(MatBottomSheet);
   firestore = inject(Firestore);
   loaderService = inject(LoaderService);
+  authService = inject(AuthService);
   snackBar = inject(MatSnackBar);
 
   // Signals for reactive state
@@ -190,10 +193,22 @@ export class ExpensesComponent {
       return false;
     });
   });
+  user: User | undefined;
 
   constructor() {
     // Initialize data fetch
-    this.fetchExpenses();
+    this.authService.user$.subscribe(user => {
+      if (!user) {
+        this.snackBar.open('Please log in to view expenses', 'Close', {
+          duration: CONSTANTS.SNACKBAR_DURATION,
+          panelClass: CONSTANTS.SNACKBAR_ERROR_CLASS,
+        });
+      } else {
+        this.user = user;
+        // Fetch expenses when user is authenticated
+        this.fetchExpenses();
+      }
+    });
   }
 
   getData(date: Timestamp | string){
@@ -346,11 +361,11 @@ export class ExpensesComponent {
     }
 
     const docRef = await addDoc(collection(this.firestore, CONSTANTS.DB_PATH), cleanData);
-    await setDoc(docRef, { ...cleanData, id: docRef.id });
+    await setDoc(docRef, { ...cleanData, id: docRef.id, email: this.user?.email }, { merge: true });
   }
 
   private async edit(id: string, data: Partial<IExpense>) {
-    const cleanData = { ...data };
+    const cleanData = { ...data, email: this.user?.email };
     delete cleanData.id;
 
     // Convert string dates to Firestore Timestamp objects
