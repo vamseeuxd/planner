@@ -2,7 +2,7 @@ import { Component, TemplateRef, inject, signal, computed } from '@angular/core'
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,7 +10,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { FormsModule, NgForm } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { Firestore, collection, collectionData, addDoc, updateDoc, deleteDoc, doc, setDoc } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, addDoc, updateDoc, deleteDoc, doc, setDoc, Timestamp } from '@angular/fire/firestore';
 import { DialogService } from '../confirmation-dialog/confirmation-dialog.service';
 import { LoaderService } from '../confirmation-dialog/loader.service';
 
@@ -33,8 +33,8 @@ interface IExpense {
   id: string;
   name: string;
   amount: number;
-  dueDate: string;
-  settledDate: string;
+  dueDate: Timestamp | string; // Can be Timestamp from Firestore or string in form
+  settledDate: Timestamp | string; // Can be Timestamp from Firestore or string in form
 }
 
 @Component({
@@ -78,8 +78,8 @@ interface IExpense {
             <div class="v-box w-100">
               <span class="fs-12 mt-8">{{ item.name }}</span>
               <div class="v-box w-100 mb-8">
-                <span class="fs-8 mt-3 mb-3 due">DUE : {{ item.dueDate | date : 'dd-MMM-yyyy' }}</span>
-                <span class="fs-8 mt-3 paid">PAID : {{ item.settledDate | date : 'dd-MMM-yyyy' }}</span>
+                <span class="fs-8 mt-3 mb-3 due">DUE : {{ getData(item.dueDate) | date : 'dd-MMM-yyyy' }}</span>
+                <span class="fs-8 mt-3 paid">PAID : {{ getData(item.settledDate) | date : 'dd-MMM-yyyy' }}</span>
               </div>
             </div>
             <div class="ms-auto fs-12 total">
@@ -181,8 +181,8 @@ export class ExpensesComponent {
   // Computed signal for filtered expenses
   filteredExpenses = computed(() => {
     return this.expenses().filter(expense => {
-      const isPending = !expense.settledDate || expense.settledDate.trim() === '';
-      const isSettled = expense.settledDate && expense.settledDate.trim() !== '';
+      const isPending = !expense.settledDate || (typeof expense.settledDate === 'string' && expense.settledDate.trim() === '');
+      const isSettled = expense.settledDate && (typeof expense.settledDate !== 'string' || expense.settledDate.trim() !== '');
 
       if (this.showPending() && isPending) return true;
       if (this.showSettled() && isSettled) return true;
@@ -194,6 +194,15 @@ export class ExpensesComponent {
   constructor() {
     // Initialize data fetch
     this.fetchExpenses();
+  }
+
+  getData(date: Timestamp | string){
+    if (typeof date === 'string') {
+      return date;
+    } else if(date && typeof date === 'object' && 'seconds' in date) {
+      return (date as Timestamp).seconds * 1000; // Convert Firestore Timestamp to milliseconds
+    }
+    return null;
   }
 
   private async fetchExpenses() {
@@ -245,14 +254,36 @@ export class ExpensesComponent {
   openCloneForm(editForm: TemplateRef<any>, data: IExpense): void {
     this.formTitle.set('Add Expense Details');
     this.isEditMode.set(false);
-    this.defaultValues.set({ ...data });
+
+    // Convert Timestamp to string date format for the form
+    const formData = { ...data };
+    if (formData.dueDate && typeof formData.dueDate !== 'string') {
+      formData.dueDate = formData.dueDate.toDate().toISOString().split('T')[0];
+    }
+
+    if (formData.settledDate && typeof formData.settledDate !== 'string') {
+      formData.settledDate = formData.settledDate.toDate().toISOString().split('T')[0];
+    }
+
+    this.defaultValues.set(formData);
     this.bottomSheet.open(editForm);
   }
 
   openEditForm(editForm: TemplateRef<any>, data: IExpense): void {
     this.formTitle.set('Edit Expense Details');
     this.isEditMode.set(true);
-    this.defaultValues.set({ ...data });
+
+    // Convert Timestamp to string date format for the form
+    const formData = { ...data };
+    if (formData.dueDate && typeof formData.dueDate !== 'string') {
+      formData.dueDate = formData.dueDate.toDate().toISOString().split('T')[0];
+    }
+
+    if (formData.settledDate && typeof formData.settledDate !== 'string') {
+      formData.settledDate = formData.settledDate.toDate().toISOString().split('T')[0];
+    }
+
+    this.defaultValues.set(formData);
     this.bottomSheet.open(editForm);
   }
 
@@ -302,6 +333,18 @@ export class ExpensesComponent {
   private async add(data: Partial<IExpense>) {
     const cleanData = { ...data };
     delete cleanData.id;
+
+    // Convert string dates to Firestore Timestamp objects
+    if (cleanData.dueDate && typeof cleanData.dueDate === 'string') {
+      cleanData.dueDate = Timestamp.fromDate(new Date(cleanData.dueDate));
+    }
+
+    if (cleanData.settledDate && typeof cleanData.settledDate === 'string' && cleanData.settledDate.trim() !== '') {
+      cleanData.settledDate = Timestamp.fromDate(new Date(cleanData.settledDate));
+    } else if (!cleanData.settledDate || (typeof cleanData.settledDate === 'string' && cleanData.settledDate.trim() === '')) {
+      delete cleanData.settledDate;
+    }
+
     const docRef = await addDoc(collection(this.firestore, CONSTANTS.DB_PATH), cleanData);
     await setDoc(docRef, { ...cleanData, id: docRef.id });
   }
@@ -309,6 +352,18 @@ export class ExpensesComponent {
   private async edit(id: string, data: Partial<IExpense>) {
     const cleanData = { ...data };
     delete cleanData.id;
+
+    // Convert string dates to Firestore Timestamp objects
+    if (cleanData.dueDate && typeof cleanData.dueDate === 'string') {
+      cleanData.dueDate = Timestamp.fromDate(new Date(cleanData.dueDate));
+    }
+
+    if (cleanData.settledDate && typeof cleanData.settledDate === 'string' && cleanData.settledDate.trim() !== '') {
+      cleanData.settledDate = Timestamp.fromDate(new Date(cleanData.settledDate));
+    } else if (!cleanData.settledDate || (typeof cleanData.settledDate === 'string' && cleanData.settledDate.trim() === '')) {
+      delete cleanData.settledDate;
+    }
+
     await updateDoc(doc(this.firestore, `${CONSTANTS.DB_PATH}/${id}`), cleanData);
   }
 
