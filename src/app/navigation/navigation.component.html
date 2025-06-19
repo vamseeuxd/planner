@@ -25,3 +25,16 @@
 
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+
+@if(loaderService.loaders$ | async; as loaders) {
+  @if (loaders.length > 0) {
+    <div style="position: fixed;top: 0;left: 0;right: 0;bottom: 0;background: #fff8f870;z-index: 100000;display: flex;flex-direction: row;flex-wrap: wrap;align-content: center;justify-content: center;align-items: center;">
+      <span>
+        <mat-spinner></mat-spinner>
+        <h4 style="text-align: center;" class="p-0 m-0 mt-10">Please wait...</h4>
+      </span>
+    </div>
+  }
+}
+

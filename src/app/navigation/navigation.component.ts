@@ -13,6 +13,9 @@ import {
 } from '@angular/router';
 import { AuthService } from '../auth/auth';
 import { DialogService } from '../confirmation-dialog/confirmation-dialog.service';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { LoaderService } from '../confirmation-dialog/loader.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-navigation',
@@ -27,12 +30,15 @@ import { DialogService } from '../confirmation-dialog/confirmation-dialog.servic
     RouterLink,
     RouterLinkActive,
     RouterModule,
+    MatProgressSpinnerModule,
+    CommonModule,
   ],
 })
 export class NavigationComponent {
   title = 'Planner';
   router = inject(Router);
   authService = inject(AuthService);
+  loaderService = inject(LoaderService);
   private dialogService = inject(DialogService);
 
   ngOnInit() {

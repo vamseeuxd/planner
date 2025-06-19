@@ -1,16 +1,22 @@
+<div class="mat-elevation-z2 py-4 px-8 mx-12 my-8">
+  <h3 class="m-0 p-0 mb-5 h-box w-100" style="font-weight: 500;color: #453135;justify-content: center;">Month : 10-JAN-2025</h3>
+  <h3 class="m-0 p-0 mb-5 h-box" style="font-weight: 400;color: orangered;">Due (10) Amount<span class="ms-auto"> : {{2000|currency:'INR'}}</span></h3>
+  <h3 class="m-0 p-0 mb-5 h-box" style="font-weight: 400;color: green;">Paid (10) Amount<span class="ms-auto"> : {{2000|currency:'INR'}}</span></h3>
+  <h3 class="m-0 p-0 mb-5 h-box" style="font-weight: 400;color: blueviolet;">Total Amount<span class="ms-auto"> : {{2000|currency:'INR'}}</span></h3>
+</div>
 <mat-list
   role="list"
   class="mx-3"
-  style="max-height: calc(100vh - 80px); overflow-y: auto"
+  style="max-height: calc(100vh - 300px); overflow-y: auto;min-height: calc(100vh - 300px);"
 >
-  @for (item of expenses; track item.name) {
+  @for (item of expenses; track item.id) {
   <mat-list-item role="listitem" style="height: auto !important;border-bottom: 1px solid #e0c4c4;">
     <div class="h-box w-100">
       <div class="v-box w-100">
         <span class="fs-12 mt-8">{{item.name}}</span>
         <div class="v-box w-100 mb-8">
-          <span style="color: blueviolet;" class="fs-8 mt-3 mb-3">DUE : {{item.dueDate | date:'dd-MMM-yyyy'}}</span>
-          <span style="color: orangered;" class="fs-8 mt-3">PAID : {{item.settledDate | date:'dd-MMM-yyyy'}}</span>
+          <span style="color: orangered;" class="fs-8 mt-3 mb-3">DUE : {{item.dueDate | date:'dd-MMM-yyyy'}}</span>
+          <span style="color: blueviolet;" class="fs-8 mt-3">PAID : {{item.settledDate | date:'dd-MMM-yyyy'}}</span>
         </div>
       </div>
       <div class="ms-auto fs-12" style="display: flex;align-items: center;color: green;">{{item.amount|currency:'INR'}}</div>
@@ -24,7 +30,7 @@
           <mat-icon>delete</mat-icon>
           <span>Delete</span>
         </button>
-        <button mat-menu-item>
+        <button mat-menu-item (click)="openCloneForm(editForm,item)">
           <mat-icon>file_copy</mat-icon>
           <span>Clone</span>
         </button>
@@ -38,29 +44,41 @@
   }
 </mat-list>
 
+<div class="h-box w-100 mt-10 mb-5 mx-3">
+  <!-- <button  matButton="elevated" class="ms-auto me-auto" (click)="openAddForm(editForm)"><mat-icon>add</mat-icon>Add New Expense</button> -->
+  <button matButton class="me-auto ms-10" (click)="openAddForm(editForm)">
+    <mat-icon>add</mat-icon>
+    Add
+  </button>
+  <mat-menu #filterList="matMenu">
+    <div mat-menu-item class="me-8" style="border-bottom: 1px solid #e0c4c4;"> <mat-checkbox>Pending</mat-checkbox> </div>
+    <div mat-menu-item class="me-8"> <mat-checkbox>Settled</mat-checkbox> </div>
+  </mat-menu>
+  <button matButton [matMenuTriggerFor]="filterList" class="ms-auto me-10"> Filters <mat-icon>filter_list</mat-icon> </button>
+</div>
 
 <ng-template #editForm>
-  <h3 class="p-0" style="color: #453135; font-weight: 500; text-align: center; margin: 8px 0px; ">Edit Expense Details</h3>
+  <h3 class="p-0" style="color: #453135; font-weight: 500; text-align: center; margin: 8px 0px; ">{{formTitle}}</h3>
   <form #editExpenseForm="ngForm" autocomplete="off" class="v-box p-5">
     <mat-form-field appearance="outline" class="w-100 mb-10">
     <mat-label>Expense Title</mat-label>
-    <input matInput [ngModel]="defaultValues.name" name="name" type="text" placeholder="Expense Title">
+    <input matInput required [ngModel]="defaultValues.name" name="name" type="text" placeholder="Expense Title">
   </mat-form-field>
   <mat-form-field appearance="outline" class="w-100 mb-10">
     <mat-label>Expense Due Date</mat-label>
-    <input matInput type="date" [ngModel]="defaultValues.dueDate" name="dueDate" placeholder="Expense Due Date">
+    <input matInput required type="date" [ngModel]="defaultValues.dueDate" name="dueDate" placeholder="Expense Due Date">
   </mat-form-field>
   <mat-form-field appearance="outline" class="w-100 mb-10">
     <mat-label>Expense Settled Date</mat-label>
-    <input matInput type="date" [ngModel]="defaultValues.settledDate" name="settledDate" placeholder="Expense Settled Date">
+    <input matInput required type="date" [ngModel]="defaultValues.settledDate" name="settledDate" placeholder="Expense Settled Date">
   </mat-form-field>
   <mat-form-field appearance="outline" class="w-100 mb-10">
     <mat-label>Expense Amount</mat-label>
-    <input matInput type="number" [ngModel]="defaultValues.amount" name="amount" placeholder="Expense Amount">
+    <input matInput required type="number" [ngModel]="defaultValues.amount" name="amount" placeholder="Expense Amount">
   </mat-form-field>
   <div class="h-box w-100 mt-10">
     <button mat-raised-button style="width: 50%;" (click)="editExpenseForm.resetForm({});bottomSheet.dismiss()">Close</button>
-    <button mat-raised-button style="width: 50%;" color="primary" (click)="editExpenseForm.resetForm({});bottomSheet.dismiss()" class="ms-10">Save</button>
+    <button mat-raised-button style="width: 50%;" [disabled]="editExpenseForm.invalid" color="primary" (click)="save(editExpenseForm,bottomSheet);" class="ms-10">Save</button>
   </div>
   </form>
 </ng-template>
