@@ -10,7 +10,7 @@ export const routes: Routes = [
   { canActivate: [authGuard], data:{title:'Dashboard'}, path: 'dashboard', loadComponent: () => import('./dashboard/dashboard.component').then( (m) => m.DashboardComponent ), },
   { canActivate: [authGuard], data:{title:'Settings'}, path: 'settings', loadComponent: () => import('./settings/settings').then( (m) => m.Settings ), },
   { canActivate: [authGuard], data:{title:'Account'}, path: 'account', loadComponent: () => import('./account/account').then( (m) => m.Account ), },
-  { canActivate: [authGuard], data:{title:'Expenses'}, path: 'expenses', loadComponent: () => import('./expenses/expenses').then( (m) => m.Expenses ), },
+  { canActivate: [authGuard], data:{title:'Expenses'}, path: 'expenses', loadComponent: () => import('./expenses/expenses').then( (m) => m.ExpensesComponent ), },
   { canActivate: [authGuard], data:{title:'Incomes'}, path: 'incomes', loadComponent: () => import('./incomes/incomes').then( (m) => m.Incomes ), },
   { canActivate: [authGuard], data:{title:'Credit-Cards'}, path: 'credit-cards', loadComponent: () => import('./credit-cards/credit-cards').then( (m) => m.CreditCards ), },
   { canActivate: [authGuard], data:{title:'Chit-Fund'}, path: 'chit-fund', loadComponent: () => import('./chit-fund/chit-fund').then( (m) => m.ChitFund ), },

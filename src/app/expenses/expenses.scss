@@ -1,0 +1,36 @@
+.month-title {
+  font-weight: 500;
+  color: var(--title-color);
+  justify-content: center;
+}
+.due-total {
+  font-weight: 400;
+  color: var(--text-danger-color);
+}
+.paid-total {
+  font-weight: 400;
+  color: var(--text-success-color);
+}
+.total-amount {
+  font-weight: 400;
+  color: var(--text-warning-color);
+}
+.expnses-list {
+  overflow-y: auto;
+  max-height: calc(100vh - 300px);
+  min-height: calc(100vh - 300px);
+}
+.expnses-list-item {
+  height: auto !important;
+  .due {
+    color: var(--text-danger-color);
+  }
+  .paid {
+    color: var(--text-warning-color);
+  }
+  .total {
+    display: flex;
+    align-items: center;
+    color: var(--text-success-color);
+  }
+}
