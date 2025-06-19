@@ -72,7 +72,7 @@ interface IExpense {
       </h3>
     </div>
     <mat-list role="list" class="mx-3 expnses-list">
-      @for (item of expenses(); track item.id) {
+      @for (item of filteredExpenses(); track item.id) {
         <mat-list-item role="listitem" class="expnses-list-item border-bottom">
           <div class="h-box w-100">
             <div class="v-box w-100">
@@ -114,10 +114,10 @@ interface IExpense {
       </button>
       <mat-menu #filterList="matMenu">
         <div mat-menu-item class="me-8 border-bottom">
-          <mat-checkbox>Pending</mat-checkbox>
+          <mat-checkbox [ngModel]="showPending()" (ngModelChange)="showPending.set($event)">Pending</mat-checkbox>
         </div>
         <div mat-menu-item class="me-8">
-          <mat-checkbox>Settled</mat-checkbox>
+          <mat-checkbox [ngModel]="showSettled()" (ngModelChange)="showSettled.set($event)">Settled</mat-checkbox>
         </div>
       </mat-menu>
       <button matButton [matMenuTriggerFor]="filterList" class="ms-auto me-10">
@@ -140,7 +140,7 @@ interface IExpense {
         </mat-form-field>
         <mat-form-field appearance="outline" class="w-100 mb-10">
           <mat-label>Expense Settled Date</mat-label>
-          <input matInput required type="date" [(ngModel)]="defaultValues().settledDate" name="settledDate" placeholder="Expense Settled Date"/>
+          <input matInput type="date" [(ngModel)]="defaultValues().settledDate" name="settledDate" placeholder="Expense Settled Date"/>
         </mat-form-field>
         <mat-form-field appearance="outline" class="w-100 mb-10">
           <mat-label>Expense Amount</mat-label>
@@ -167,6 +167,8 @@ export class ExpensesComponent {
   expenses = signal<IExpense[]>([]);
   formTitle = signal('Edit Expense Details');
   isEditMode = signal(false);
+  showPending = signal(true);
+  showSettled = signal(true);
   defaultValues = signal<IExpense>({
     id: '',
     name: '',
@@ -175,6 +177,19 @@ export class ExpensesComponent {
     settledDate: '',
   });
   constants = CONSTANTS;
+
+  // Computed signal for filtered expenses
+  filteredExpenses = computed(() => {
+    return this.expenses().filter(expense => {
+      const isPending = !expense.settledDate || expense.settledDate.trim() === '';
+      const isSettled = expense.settledDate && expense.settledDate.trim() !== '';
+
+      if (this.showPending() && isPending) return true;
+      if (this.showSettled() && isSettled) return true;
+
+      return false;
+    });
+  });
 
   constructor() {
     // Initialize data fetch
