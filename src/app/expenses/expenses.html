@@ -8,16 +8,19 @@
     <div class="h-box w-100">
       <div class="v-box w-100">
         <span class="fs-12 mt-8">{{item.name}}</span>
-        <span style="color: blueviolet;" class="fs-9 mt-4 mb-8">{{item.date | date:'dd-MMM-yyyy'}}</span>
+        <div class="v-box w-100 mb-8">
+          <span style="color: blueviolet;" class="fs-8 mt-3 mb-3">DUE : {{item.dueDate | date:'dd-MMM-yyyy'}}</span>
+          <span style="color: orangered;" class="fs-8 mt-3">PAID : {{item.settledDate | date:'dd-MMM-yyyy'}}</span>
+        </div>
       </div>
       <div class="ms-auto fs-12" style="display: flex;align-items: center;color: green;">{{item.amount|currency:'INR'}}</div>
       <mat-icon [matMenuTriggerFor]="menu">more_vert</mat-icon>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item>
+        <button mat-menu-item (click)="openEditForm(editForm,item)">
           <mat-icon>edit</mat-icon>
           <span>Edit</span>
         </button>
-        <button mat-menu-item disabled>
+        <button mat-menu-item (click)="deleteExpense(item)">
           <mat-icon>delete</mat-icon>
           <span>Delete</span>
         </button>
@@ -34,3 +37,30 @@
   <li>There are no items.</li>
   }
 </mat-list>
+
+
+<ng-template #editForm>
+  <h3 class="p-0" style="color: #453135; font-weight: 500; text-align: center; margin: 8px 0px; ">Edit Expense Details</h3>
+  <form #editExpenseForm="ngForm" autocomplete="off" class="v-box p-5">
+    <mat-form-field appearance="outline" class="w-100 mb-10">
+    <mat-label>Expense Title</mat-label>
+    <input matInput [ngModel]="defaultValues.name" name="name" type="text" placeholder="Expense Title">
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="w-100 mb-10">
+    <mat-label>Expense Due Date</mat-label>
+    <input matInput type="date" [ngModel]="defaultValues.dueDate" name="dueDate" placeholder="Expense Due Date">
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="w-100 mb-10">
+    <mat-label>Expense Settled Date</mat-label>
+    <input matInput type="date" [ngModel]="defaultValues.settledDate" name="settledDate" placeholder="Expense Settled Date">
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="w-100 mb-10">
+    <mat-label>Expense Amount</mat-label>
+    <input matInput type="number" [ngModel]="defaultValues.amount" name="amount" placeholder="Expense Amount">
+  </mat-form-field>
+  <div class="h-box w-100 mt-10">
+    <button mat-raised-button style="width: 50%;" (click)="editExpenseForm.resetForm({});bottomSheet.dismiss()">Close</button>
+    <button mat-raised-button style="width: 50%;" color="primary" (click)="editExpenseForm.resetForm({});bottomSheet.dismiss()" class="ms-10">Save</button>
+  </div>
+  </form>
+</ng-template>
