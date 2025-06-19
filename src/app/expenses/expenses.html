@@ -11,7 +11,21 @@
         <span style="color: blueviolet;" class="fs-9 mt-4 mb-8">{{item.date | date:'dd-MMM-yyyy'}}</span>
       </div>
       <div class="ms-auto fs-12" style="display: flex;align-items: center;color: green;">{{item.amount|currency:'INR'}}</div>
-      <mat-icon>more_vert</mat-icon>
+      <mat-icon [matMenuTriggerFor]="menu">more_vert</mat-icon>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>edit</mat-icon>
+          <span>Edit</span>
+        </button>
+        <button mat-menu-item disabled>
+          <mat-icon>delete</mat-icon>
+          <span>Delete</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>file_copy</mat-icon>
+          <span>Clone</span>
+        </button>
+      </mat-menu>
       <!-- <button matIconButton class="ms-auto">
       </button> -->
     </div>
