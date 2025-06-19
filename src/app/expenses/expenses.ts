@@ -10,7 +10,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { FormsModule, NgForm } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { Firestore, collection, collectionData, addDoc, updateDoc, deleteDoc, doc, setDoc, Timestamp } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, addDoc, updateDoc, deleteDoc, doc, setDoc, Timestamp, query, where } from '@angular/fire/firestore';
 import { DialogService } from '../confirmation-dialog/confirmation-dialog.service';
 import { LoaderService } from '../confirmation-dialog/loader.service';
 import { AuthService } from '../auth/auth';
@@ -224,7 +224,8 @@ export class ExpensesComponent {
     const id = this.loaderService.show();
     try {
       const expensesCollection = collection(this.firestore, CONSTANTS.DB_PATH);
-      collectionData(expensesCollection, { idField: 'id' }).subscribe((data) => {
+      const q = query(expensesCollection, where('email', '==', this.user?.email));
+      collectionData(q, { idField: 'id' }).subscribe((data) => {
         this.expenses.set(data as IExpense[]);
         this.loaderService.hide(id);
       });
