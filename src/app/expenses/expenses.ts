@@ -79,7 +79,7 @@ interface IExpense {
               <span class="fs-12 mt-8">{{ item.name }}</span>
               <div class="v-box w-100 mb-8">
                 <span class="fs-8 mt-3 mb-3 due">DUE : {{ getData(item.dueDate) | date : 'dd-MMM-yyyy' }}</span>
-                <span class="fs-8 mt-3 paid">PAID : {{ getData(item.settledDate) | date : 'dd-MMM-yyyy' }}</span>
+                <span class="fs-8 mt-3 paid">PAID : {{ (getData(item.settledDate) | date : 'dd-MMM-yyyy') || 'NA' }}</span>
               </div>
             </div>
             <div class="ms-auto fs-12 total">
