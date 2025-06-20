@@ -15,6 +15,8 @@ import { DialogService } from '../confirmation-dialog/confirmation-dialog.servic
 import { LoaderService } from '../confirmation-dialog/loader.service';
 import { AuthService } from '../auth/auth';
 import { User } from '@angular/fire/auth';
+import {MatDatepicker, MatDatepickerModule} from '@angular/material/datepicker';
+import {provideNativeDateAdapter} from '@angular/material/core';
 
 // Constants for hardcoded values
 const CONSTANTS = {
@@ -54,22 +56,29 @@ interface IExpense {
     MatFormFieldModule,
     MatCheckboxModule,
     MatSnackBarModule,
+    MatDatepickerModule,
   ],
+  providers: [provideNativeDateAdapter()],
+  styleUrl: './expenses.scss',
   template: `
     <div class="mat-elevation-z2 py-4 px-8 mx-12 my-8">
       <h3 class="m-0 p-0 mb-5 h-box w-100 month-title">
-        Month : {{ constants.MONTH_DISPLAY }}
+        <mat-form-field class="example-full-width" style="display: none;">
+          <input matInput [matDatepicker]="picker" [value]="selectedMonth()">
+          <mat-datepicker touchUi #dp (monthSelected)="setMonthAndYear($event, dp)" startView="multi-year" #picker></mat-datepicker>
+        </mat-form-field>
+        <button matButton="elevated" (click)="picker.open()">Month : {{ selectedMonth() | date : 'MMMM-yyyy' }}</button>
       </h3>
       <h3 class="m-0 p-0 mb-5 h-box due-total">
-        Due ({{ constants.DEFAULT_COUNT }}) Amount<span class="ms-auto">
+        Due ({{ constants.DEFAULT_COUNT }})<span class="ms-auto">
           : {{ constants.DEFAULT_AMOUNT | currency : constants.CURRENCY }}</span>
       </h3>
       <h3 class="m-0 p-0 mb-5 h-box paid-total">
-        Paid ({{ constants.DEFAULT_COUNT }}) Amount<span class="ms-auto">
+        Paid ({{ constants.DEFAULT_COUNT }})<span class="ms-auto">
           : {{ constants.DEFAULT_AMOUNT | currency : constants.CURRENCY }}</span>
       </h3>
       <h3 class="m-0 p-0 mb-5 h-box total-amount">
-        Total Amount<span class="ms-auto">
+        Total <span class="ms-auto">
           : {{ constants.DEFAULT_AMOUNT | currency : constants.CURRENCY }}</span>
       </h3>
     </div>
@@ -155,7 +164,6 @@ interface IExpense {
       </form>
     </ng-template>
   `,
-  styleUrl: './expenses.scss',
 })
 export class ExpensesComponent {
   // Injected services
@@ -194,6 +202,7 @@ export class ExpensesComponent {
     });
   });
   user: User | undefined;
+  selectedMonth = signal(new Date());
 
   constructor() {
     // Initialize data fetch
@@ -209,6 +218,17 @@ export class ExpensesComponent {
         this.fetchExpenses();
       }
     });
+  }
+
+  setMonthAndYear(normalizedMonthAndYear: Date, datepicker: MatDatepicker<any>) {
+    /* const ctrlValue = this.date.value ?? moment();
+    ctrlValue.month(normalizedMonthAndYear.month());
+    ctrlValue.year(normalizedMonthAndYear.year());
+    this.date.setValue(ctrlValue); */
+    console.log(normalizedMonthAndYear.getFullYear(), normalizedMonthAndYear.getMonth());
+    console.log(normalizedMonthAndYear.toLocaleString('en-US', { month: 'short', year: 'numeric' }));
+    this.selectedMonth.set(normalizedMonthAndYear);
+    datepicker.close();
   }
 
   getData(date: Timestamp | string){
