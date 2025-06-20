@@ -73,15 +73,15 @@ interface IExpense {
       </h3>
 
       <div class="h-box">        
-        <span class="due-total">Due <br/> {{ constants.DEFAULT_AMOUNT | currency : constants.CURRENCY }}</span>        
-        <span class="paid-total">Paid <br/> {{ constants.DEFAULT_AMOUNT | currency : constants.CURRENCY }}</span>
-        <span class="total-amount">Total <br/> {{ constants.DEFAULT_AMOUNT | currency : constants.CURRENCY }}</span>
+        <span class="due-total">Due <br/> {{ totalDueAmount() | currency : constants.CURRENCY }}</span>        
+        <span class="paid-total">Paid <br/> {{ totalSettledAmount() | currency : constants.CURRENCY }}</span>
+        <span class="total-amount">Total <br/> {{ totalAmount() | currency : constants.CURRENCY }}</span>
       </div>
 
       <mat-progress-bar
           [mode]="mode"
-          [value]="value"
-          [bufferValue]="bufferValue">
+          [value]="value()"
+          [bufferValue]="bufferValue()">
       </mat-progress-bar>
      
     </div>
@@ -184,8 +184,17 @@ export class ExpensesComponent {
   showPending = signal(true);
   showSettled = signal(true);
   mode: ProgressBarMode = 'determinate';
-  value = 50;
-  bufferValue = 75;
+  
+  // Progress bar values computed from expense amounts
+  value = computed(() => {
+    const total = this.totalAmount();
+    return total > 0 ? (this.totalSettledAmount() / total) * 100 : 0;
+  });
+  
+  bufferValue = computed(() => {
+    const total = this.totalAmount();
+    return total > 0 ? ((this.totalSettledAmount() + this.totalDueAmount()) / total) * 100 : 100;
+  });
   defaultValues = signal<IExpense>({
     id: '',
     name: '',
@@ -194,6 +203,23 @@ export class ExpensesComponent {
     settledDate: '',
   });
   constants = CONSTANTS;
+  
+  // Amount signals
+  totalDueAmount = computed(() => {
+    return this.expenses()
+      .filter(expense => !expense.settledDate || (typeof expense.settledDate === 'string' && expense.settledDate.trim() === ''))
+      .reduce((sum, expense) => sum + expense.amount, 0);
+  });
+  
+  totalSettledAmount = computed(() => {
+    return this.expenses()
+      .filter(expense => expense.settledDate && (typeof expense.settledDate !== 'string' || expense.settledDate.trim() !== ''))
+      .reduce((sum, expense) => sum + expense.amount, 0);
+  });
+  
+  totalAmount = computed(() => {
+    return this.expenses().reduce((sum, expense) => sum + expense.amount, 0);
+  });
 
   // Computed signal for filtered expenses
   filteredExpenses = computed(() => {
