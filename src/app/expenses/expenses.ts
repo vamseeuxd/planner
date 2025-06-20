@@ -39,7 +39,7 @@ interface IExpense {
   name: string;
   amount: number;
   dueDate: Timestamp | string; // Can be Timestamp from Firestore or string in form
-  settledDate: Timestamp | string; // Can be Timestamp from Firestore or string in form
+  settledDate: Timestamp | string | null; // Can be Timestamp from Firestore or string in form
 }
 
 @Component({
@@ -106,7 +106,7 @@ interface IExpense {
               <span class="fs-12 mt-8">{{ item.name }}</span>
               <div class="v-box w-100 mb-8">
                 <span class="fs-8 mt-3 mb-3 due">DUE : {{ getData(item.dueDate) | date : 'dd-MMM-yyyy' }}</span>
-                <span class="fs-8 mt-3 paid">PAID : {{ (getData(item.settledDate) | date : 'dd-MMM-yyyy') || 'NA' }}</span>
+                <span class="fs-8 mt-3 paid">PAID : {{ item.settledDate ? (getData(item.settledDate) | date : 'dd-MMM-yyyy') : 'NA' }}</span>
               </div>
             </div>
             <div class="ms-auto fs-12 total">
@@ -163,11 +163,15 @@ interface IExpense {
         </mat-form-field>
         <mat-form-field appearance="outline" class="w-100 mb-10">
           <mat-label>Expense Due Date</mat-label>
-          <input matInput required type="date" [(ngModel)]="defaultValues().dueDate" name="dueDate" placeholder="Expense Due Date"/>
+          <input matInput required [matDatepicker]="dueDatePicker" [(ngModel)]="defaultValues().dueDate" name="dueDate" placeholder="Expense Due Date">
+          <mat-datepicker-toggle matIconSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker touchUi #dueDatePicker></mat-datepicker>
         </mat-form-field>
         <mat-form-field appearance="outline" class="w-100 mb-10">
           <mat-label>Expense Settled Date</mat-label>
-          <input matInput type="date" [(ngModel)]="defaultValues().settledDate" name="settledDate" placeholder="Expense Settled Date"/>
+          <input matInput [matDatepicker]="settledDatePicker" [(ngModel)]="defaultValues().settledDate" name="settledDate" placeholder="Expense Settled Date">
+          <mat-datepicker-toggle matIconSuffix [for]="settledDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker touchUi #settledDatePicker></mat-datepicker>
         </mat-form-field>
         <mat-form-field appearance="outline" class="w-100 mb-10">
           <mat-label>Expense Amount</mat-label>
@@ -471,7 +475,8 @@ export class ExpensesComponent {
     if (cleanData.settledDate && typeof cleanData.settledDate === 'string' && cleanData.settledDate.trim() !== '') {
       cleanData.settledDate = Timestamp.fromDate(new Date(cleanData.settledDate));
     } else if (!cleanData.settledDate || (typeof cleanData.settledDate === 'string' && cleanData.settledDate.trim() === '')) {
-      delete cleanData.settledDate;
+      // Set to null explicitly to update the field in Firestore when it's empty
+      cleanData.settledDate = null;
     }
 
     await updateDoc(doc(this.firestore, `${CONSTANTS.DB_PATH}/${id}`), cleanData);
