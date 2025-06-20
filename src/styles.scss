@@ -9,13 +9,13 @@
   --dashboard-corner-extra-small: 32px;
   --dashboard-card-title-bg-color: #fff8f8e6;
   --dashboard-card-title-color: #2b2b2b;
-  
+
   /* Text colors */
   --text-success-color: green;
   --text-danger-color: orangered;
   --text-warning-color: blueviolet;
   --title-color: #453135;
-  
+
   /* Theme colors */
   --dark-bg-color: #222;
   --semi-dark-bg-color: #333;
@@ -23,10 +23,10 @@
   --light-bg-color: #d2d2d2;
   --semi-light-bg-color: #c0c0c0;
   --dark-text-color: #333;
-  
+
   /* From login.scss */
   --divider-color: #757575;
-  
+
   /* From todo-list.component.css */
   --container-padding: 24px;
   --card-margin: 16px;
@@ -36,10 +36,10 @@
   --node-hover-bg: rgba(0, 0, 0, 0.04);
   --node-details-color: #555;
   --node-actions-gap: 4px;
-  
+
   /* From styles.scss */
   --border-color: #e0c4c4;
-  
+
   /* Theme specific variables */
   --background-color: #ffffff;
   --text-color: #333333;
@@ -78,6 +78,9 @@ body.dark-theme {
   --node-details-color: #aaaaaa;
   --node-hover-bg: rgba(255, 255, 255, 0.08);
   --divider-color: #555555;
+  --mat-icon-color: #9e9e9e;
+  --text-warning-color: #d2a2ff;
+  
 }
 
 /* Light theme class */
@@ -95,6 +98,8 @@ body.light-theme {
   --node-details-color: #555;
   --node-hover-bg: rgba(0, 0, 0, 0.04);
   --divider-color: #757575;
+  --mat-icon-color: #757575;
+  --mat-toolbar-icon-color: #ffffff;
 }
 
 .mat-mdc-card-header {
@@ -257,7 +262,6 @@ mat-list-item:hover,
   border-bottom: 1px solid var(--border-color) !important;
 }
 
-
 .form-title {
   color: #453135;
   font-weight: 500;
@@ -270,42 +274,42 @@ mat-list-item:hover,
     background-color: var(--card-background);
     color: var(--text-color);
   }
-  
+
   .mat-drawer {
     background-color: var(--semi-dark-bg-color);
     color: var(--light-text-color);
   }
-  
+
   .mat-drawer-container {
     background-color: var(--background-color);
     color: var(--text-color);
   }
-  
+
   .mat-mdc-dialog-container {
     background-color: var(--card-background);
     color: var(--text-color);
   }
-  
+
   .mat-mdc-form-field-label {
     color: var(--text-color);
   }
-  
+
   .mat-mdc-form-field-input {
     color: var(--text-color);
   }
-  
+
   .mat-mdc-form-field-hint {
     color: var(--text-color);
   }
-  
+
   .mat-mdc-form-field-error {
     color: var(--text-danger-color);
   }
-  
+
   .mdc-list-item__primary-text {
     color: var(--light-text-color);
   }
-  
+
   .mat-toolbar.mat-primary {
     background-color: #333;
   }
@@ -327,7 +331,7 @@ mat-list-item:hover,
 .dark-theme {
   .mat-toolbar {
     background-color: #333;
-    color: #e0e0e0;
+    color: #9e9e9e;
   }
 }
 
@@ -335,34 +339,36 @@ mat-list-item:hover,
 .light-theme {
   .mat-toolbar {
     background-color: #f5f5f5;
-    color: #333;
+    color: #fff;
   }
 }
 /* Fix for list item text in dark mode */
 .dark-theme .mdc-list-item__primary-text {
-  color: #e0e0e0 !important;
+  color: #9e9e9e !important;
 }
 /* Primary toolbar specific styles */
 .dark-theme .mat-toolbar.mat-primary {
   background-color: #1e1e1e;
-  color: #ffffff;
+  color: #9e9e9e;
 }
 
 .light-theme .mat-toolbar.mat-primary {
   background-color: #f44336; /* Default Angular Material primary color */
-  color: white;
+  mat-icon {
+    color: var(--mat-toolbar-icon-color) !important;
+  }
 }
 /* Button styles for dark theme */
 .dark-theme {
   .mat-mdc-raised-button:not([color]) {
     background-color: #333;
-    color: #e0e0e0;
+    color: #9e9e9e;
   }
-  
+
   .mat-mdc-raised-button.mat-primary {
     background-color: #673ab7;
   }
-  
+
   .mat-mdc-raised-button.mat-accent {
     background-color: #ff4081;
   }
@@ -372,11 +378,11 @@ mat-list-item:hover,
   .mat-mdc-menu-panel {
     background-color: #333;
   }
-  
+
   .mat-mdc-menu-item {
     color: #e0e0e0;
   }
-  
+
   .mat-mdc-menu-item:hover:not([disabled]) {
     background-color: rgba(255, 255, 255, 0.08);
   }
@@ -393,7 +399,7 @@ mat-list-item:hover,
   .mat-mdc-menu-panel {
     background-color: #333;
   }
-  
+
   .mat-mdc-menu-item:hover:not([disabled]) {
     background-color: rgba(255, 255, 255, 0.08);
   }

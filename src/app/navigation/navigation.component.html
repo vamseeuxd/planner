@@ -18,10 +18,10 @@
         <button type="button" aria-label="Toggle sidenav" matIconButton (click)="drawer.toggle()"> <mat-icon aria-label="Side nav toggle icon">menu</mat-icon> </button>
         <span>{{title}}</span>
         <div class="ms-auto">
+          <button [routerLinkActive]="'hide'" [routerLink]="['dashboard']" matIconButton> <mat-icon>home</mat-icon> </button>
           <button matIconButton (click)="themeService.toggleTheme()">
             <mat-icon>{{ (themeService.theme$ | async) === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon>
           </button>
-          <button [routerLinkActive]="'hide'" [routerLink]="['dashboard']" matIconButton> <mat-icon>home</mat-icon> </button>
         </div>
       </div>
     </mat-toolbar>
