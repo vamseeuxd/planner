@@ -26,14 +26,14 @@ $dark-theme: mat.define-dark-theme((color: (primary: $dark-theme-primary,
     ));
 
 // Dark theme variables
-$dark-bg-color: #222;
-$semi-dark-bg-color: #333;
-$light-text-color: #cacaca;
+$dark-bg-color: var(--dark-bg-color);
+$semi-dark-bg-color: var(--semi-dark-bg-color);
+$light-text-color: var(--light-text-color);
 
 // Light theme variables
-$light-bg-color: #d2d2d2;
-$semi-light-bg-color: #c0c0c0;
-$dark-text-color: #333;
+$light-bg-color: var(--light-bg-color);
+$semi-light-bg-color: var(--semi-light-bg-color);
+$dark-text-color: var(--dark-text-color);
 
 
 // Dark mode

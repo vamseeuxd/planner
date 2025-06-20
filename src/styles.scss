@@ -21,14 +21,41 @@ $my-theme: mat.m2-define-light-theme((
 @use "sass:math";
 
 :root {
+  /* Dashboard variables */
   --dashboard-card-margin: 12px;
   --dashboard-corner-extra-small: 32px;
   --dashboard-card-title-bg-color: #fff8f8e6;
   --dashboard-card-title-color: #2b2b2b;
+  
+  /* Text colors */
   --text-success-color: green;
   --text-danger-color: orangered;
   --text-warning-color: blueviolet;
   --title-color: #453135;
+  
+  /* Theme colors from themes.scss */
+  --dark-bg-color: #222;
+  --semi-dark-bg-color: #333;
+  --light-text-color: #cacaca;
+  --light-bg-color: #d2d2d2;
+  --semi-light-bg-color: #c0c0c0;
+  --dark-text-color: #333;
+  
+  /* From login.scss */
+  --divider-color: #757575;
+  
+  /* From todo-list.component.css */
+  --container-padding: 24px;
+  --card-margin: 16px;
+  --card-border-radius: 8px;
+  --card-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --form-gap: 16px;
+  --node-hover-bg: rgba(0, 0, 0, 0.04);
+  --node-details-color: #555;
+  --node-actions-gap: 4px;
+  
+  /* From styles.scss */
+  --border-color: #e0c4c4;
 }
 
 html,
@@ -199,7 +226,7 @@ mat-list-item:hover,
 }
 
 .border-bottom {
-  border-bottom: 1px solid #e0c4c4 !important;
+  border-bottom: 1px solid var(--border-color) !important;
 }
 
 

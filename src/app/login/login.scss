@@ -8,13 +8,13 @@
   align-items: center;
   text-align: center;
   margin: 1rem 0;
-  color: #757575;
+  color: var(--divider-color);
 
   &::before,
   &::after {
     content: '';
     flex: 1;
-    border-bottom: 1px solid #757575;
+    border-bottom: 1px solid var(--divider-color);
   }
 }
 

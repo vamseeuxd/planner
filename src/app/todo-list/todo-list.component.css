@@ -1,5 +1,5 @@
 .container {
-  padding: 24px;
+  padding: var(--container-padding);
   max-width: 900px;
   margin: 0 auto;
 }
@@ -10,16 +10,16 @@
 }
 
 .form-card, .tree-card {
-  margin: 16px 0;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin: var(--card-margin) 0;
+  border-radius: var(--card-border-radius);
+  box-shadow: var(--card-box-shadow);
 }
 
 .form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: var(--form-gap);
+  margin-bottom: var(--form-gap);
 }
 
 .form-field {
@@ -41,7 +41,7 @@
 }
 
 .tree-node:hover {
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: var(--node-hover-bg);
 }
 
 .node-content {
@@ -53,13 +53,13 @@
 
 .node-details {
   font-size: 0.9rem;
-  color: #555;
+  color: var(--node-details-color);
 }
 
 .node-actions {
   margin-left: auto;
   display: flex;
-  gap: 4px;
+  gap: var(--node-actions-gap);
 }
 
 mat-icon-button {
