@@ -15,6 +15,21 @@
   <link rel="manifest" href="manifest.webmanifest">
 </head>
 <body class="mat-typography">
+  <script>
+    // Initialize theme based on user preference or system setting
+    (function() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+      } else if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark-theme');
+      } else {
+        document.body.classList.add('light-theme');
+      }
+    })();
+  </script>
   <app-root></app-root>
   <noscript>Please enable JavaScript to continue using this application.</noscript>
 </body>

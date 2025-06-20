@@ -16,6 +16,7 @@ import { DialogService } from '../confirmation-dialog/confirmation-dialog.servic
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { LoaderService } from '../confirmation-dialog/loader.service';
 import { CommonModule } from '@angular/common';
+import { ThemeService } from '../theme.service';
 
 @Component({
   selector: 'app-navigation',
@@ -39,6 +40,7 @@ export class NavigationComponent {
   router = inject(Router);
   authService = inject(AuthService);
   loaderService = inject(LoaderService);
+  themeService = inject(ThemeService);
   private dialogService = inject(DialogService);
 
   ngOnInit() {

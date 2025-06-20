@@ -2,6 +2,7 @@
 @use "@angular/material" as mat;
 @use "sass:math";
 
+/* Light theme variables (default) */
 :root {
   /* Dashboard variables */
   --dashboard-card-margin: 12px;
@@ -15,7 +16,7 @@
   --text-warning-color: blueviolet;
   --title-color: #453135;
   
-  /* Theme colors from themes.scss */
+  /* Theme colors */
   --dark-bg-color: #222;
   --semi-dark-bg-color: #333;
   --light-text-color: #cacaca;
@@ -38,6 +39,15 @@
   
   /* From styles.scss */
   --border-color: #e0c4c4;
+  
+  /* Theme specific variables */
+  --background-color: #ffffff;
+  --text-color: #333333;
+  --card-background: #ffffff;
+  --hover-background: rgba(0, 0, 0, 0.04);
+  --mat-sys-background: #ffffff;
+  --mat-sys-surface-variant: #f5f5f5;
+  --mat-sys-corner-extra-small: 4px;
 }
 
 html,
@@ -49,6 +59,42 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   background-color: var(--mat-sys-background);
   overflow: hidden;
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark theme class */
+body.dark-theme {
+  --background-color: #121212;
+  --text-color: #e0e0e0;
+  --card-background: #1e1e1e;
+  --hover-background: rgba(255, 255, 255, 0.08);
+  --mat-sys-background: #121212;
+  --mat-sys-surface-variant: #2d2d2d;
+  --dashboard-card-title-bg-color: rgba(30, 30, 30, 0.9);
+  --dashboard-card-title-color: #e0e0e0;
+  --title-color: #c0a0a0;
+  --border-color: #444444;
+  --node-details-color: #aaaaaa;
+  --node-hover-bg: rgba(255, 255, 255, 0.08);
+  --divider-color: #555555;
+}
+
+/* Light theme class */
+body.light-theme {
+  --background-color: #ffffff;
+  --text-color: #333333;
+  --card-background: #ffffff;
+  --hover-background: rgba(0, 0, 0, 0.04);
+  --mat-sys-background: #ffffff;
+  --mat-sys-surface-variant: #f5f5f5;
+  --dashboard-card-title-bg-color: #fff8f8e6;
+  --dashboard-card-title-color: #2b2b2b;
+  --title-color: #453135;
+  --border-color: #e0c4c4;
+  --node-details-color: #555;
+  --node-hover-bg: rgba(0, 0, 0, 0.04);
+  --divider-color: #757575;
 }
 
 .mat-mdc-card-header {
@@ -152,7 +198,7 @@ mat-list-item:hover,
 .mdc-list-item:active,
 .mdc-list-item.active,
 .mdc-list-item:hover {
-  background-color: #ffc0cb4f !important;
+  background-color: var(--hover-background) !important;
   border-radius: var(--mat-sys-corner-extra-small);
 }
 
@@ -217,4 +263,138 @@ mat-list-item:hover,
   font-weight: 500;
   text-align: center;
   margin: 8px 0px;
+}
+/* Theme-specific Material component styles */
+.dark-theme {
+  .mat-mdc-card {
+    background-color: var(--card-background);
+    color: var(--text-color);
+  }
+  
+  .mat-drawer {
+    background-color: var(--semi-dark-bg-color);
+    color: var(--light-text-color);
+  }
+  
+  .mat-drawer-container {
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+  
+  .mat-mdc-dialog-container {
+    background-color: var(--card-background);
+    color: var(--text-color);
+  }
+  
+  .mat-mdc-form-field-label {
+    color: var(--text-color);
+  }
+  
+  .mat-mdc-form-field-input {
+    color: var(--text-color);
+  }
+  
+  .mat-mdc-form-field-hint {
+    color: var(--text-color);
+  }
+  
+  .mat-mdc-form-field-error {
+    color: var(--text-danger-color);
+  }
+  
+  .mdc-list-item__primary-text {
+    color: var(--light-text-color);
+  }
+  
+  .mat-toolbar.mat-primary {
+    background-color: #333;
+  }
+}
+
+/* Override Material styles for better theme support */
+.mat-mdc-card {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.mat-drawer {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.mat-drawer-container {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+/* Toolbar styles for dark theme */
+.dark-theme {
+  .mat-toolbar {
+    background-color: #333;
+    color: #e0e0e0;
+  }
+}
+
+/* Toolbar styles for light theme */
+.light-theme {
+  .mat-toolbar {
+    background-color: #f5f5f5;
+    color: #333;
+  }
+}
+/* Fix for list item text in dark mode */
+.dark-theme .mdc-list-item__primary-text {
+  color: #e0e0e0 !important;
+}
+/* Primary toolbar specific styles */
+.dark-theme .mat-toolbar.mat-primary {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+.light-theme .mat-toolbar.mat-primary {
+  background-color: #f44336; /* Default Angular Material primary color */
+  color: white;
+}
+/* Button styles for dark theme */
+.dark-theme {
+  .mat-mdc-raised-button:not([color]) {
+    background-color: #333;
+    color: #e0e0e0;
+  }
+  
+  .mat-mdc-raised-button.mat-primary {
+    background-color: #673ab7;
+  }
+  
+  .mat-mdc-raised-button.mat-accent {
+    background-color: #ff4081;
+  }
+}
+/* Menu styles for dark theme */
+.dark-theme {
+  .mat-mdc-menu-panel {
+    background-color: #333;
+  }
+  
+  .mat-mdc-menu-item {
+    color: #e0e0e0;
+  }
+  
+  .mat-mdc-menu-item:hover:not([disabled]) {
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+}
+/* Menu text color for dark theme */
+.dark-theme {
+  .mat-mdc-menu-content,
+  .mat-mdc-menu-item .mat-mdc-menu-item-text {
+    color: #e0e0e0;
+  }
+}
+/* Menu background for dark theme */
+.dark-theme {
+  .mat-mdc-menu-panel {
+    background-color: #333;
+  }
+  
+  .mat-mdc-menu-item:hover:not([disabled]) {
+    background-color: rgba(255, 255, 255, 0.08);
+  }
 }
