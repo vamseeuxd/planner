@@ -260,14 +260,12 @@ export class ExpensesComponent {
   }
 
   setMonthAndYear(normalizedMonthAndYear: Date, datepicker: MatDatepicker<any>) {
-    /* const ctrlValue = this.date.value ?? moment();
-    ctrlValue.month(normalizedMonthAndYear.month());
-    ctrlValue.year(normalizedMonthAndYear.year());
-    this.date.setValue(ctrlValue); */
     console.log(normalizedMonthAndYear.getFullYear(), normalizedMonthAndYear.getMonth());
     console.log(normalizedMonthAndYear.toLocaleString('en-US', { month: 'short', year: 'numeric' }));
     this.selectedMonth.set(normalizedMonthAndYear);
     datepicker.close();
+    // Fetch expenses for the newly selected month
+    this.fetchExpenses();
   }
 
   getData(date: Timestamp | string){
@@ -282,8 +280,25 @@ export class ExpensesComponent {
   private async fetchExpenses() {
     const id = this.loaderService.show();
     try {
+      // Get the first day of the selected month
+      const startDate = new Date(this.selectedMonth().getFullYear(), this.selectedMonth().getMonth(), 1);
+      // Get the first day of the next month
+      const endDate = new Date(this.selectedMonth().getFullYear(), this.selectedMonth().getMonth() + 1, 1);
+      
+      // Convert to Firestore Timestamps
+      const startTimestamp = Timestamp.fromDate(startDate);
+      const endTimestamp = Timestamp.fromDate(endDate);
+      
       const expensesCollection = collection(this.firestore, CONSTANTS.DB_PATH);
-      const q = query(expensesCollection, where('email', '==', this.user?.email));
+      
+      // Query expenses for the selected month and user email
+      const q = query(
+        expensesCollection,
+        where('email', '==', this.user?.email),
+        where('dueDate', '>=', startTimestamp),
+        where('dueDate', '<', endTimestamp)
+      );
+      
       collectionData(q, { idField: 'id' }).subscribe((data) => {
         this.expenses.set(data as IExpense[]);
         this.loaderService.hide(id);
