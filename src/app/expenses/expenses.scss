@@ -29,8 +29,8 @@
 }
 .expnses-list {
   overflow-y: auto;
-  max-height: calc(100vh - 300px);
-  min-height: calc(100vh - 300px);
+  max-height: calc(100vh - 340px);
+  min-height: calc(100vh - 340px);
 }
 .expnses-list-item {
   height: auto !important;
@@ -38,11 +38,57 @@
     color: var(--text-danger-color);
   }
   .paid {
-    color: var(--text-warning-color);
+    color: var(--text-success-color);
   }
   .total {
     display: flex;
     align-items: center;
-    color: var(--text-success-color);
+    color: var(--text-warning-color);
   }
+}
+
+/* --------------------------------------------------------------------- */
+
+.due-total {
+  color: var(--text-danger-color);
+}
+
+.paid-total {
+  color: var(--text-success-color);
+}
+
+.total-amount {
+  color: var(--text-warning-color);
+}
+
+.progress-container {
+  position: relative;
+  margin: 10px 0;
+}
+
+.expense-progress {
+  height: 20px;
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.settled-label {
+  color: #4caf50;
+}
+
+.due-label {
+  color: #f44336;
+}
+
+::ng-deep .expense-progress .mdc-linear-progress__bar-inner {
+  border-color: #4caf50 !important;
+}
+
+::ng-deep .expense-progress .mdc-linear-progress__buffer-bar {
+  background-color: #ffcdd2 !important;
 }

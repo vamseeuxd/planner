@@ -78,11 +78,18 @@ interface IExpense {
         <span class="total-amount">Total <br/> {{ totalAmount() | currency : constants.CURRENCY }}</span>
       </div>
 
-      <mat-progress-bar
-          [mode]="mode"
-          [value]="value()"
-          [bufferValue]="bufferValue()">
-      </mat-progress-bar>
+      <div class="progress-container">
+        <mat-progress-bar
+            class="expense-progress"
+            [mode]="mode"
+            [value]="value()"
+            [bufferValue]="bufferValue()">
+        </mat-progress-bar>
+        <div class="progress-labels">
+          <span class="settled-label">Settled: {{value().toFixed(0)}}%</span>
+          <span class="due-label">Due: {{(100 - value()).toFixed(0)}}%</span>
+        </div>
+      </div>
      
     </div>
     <mat-list role="list" class="mx-3 expnses-list">
@@ -183,7 +190,7 @@ export class ExpensesComponent {
   isEditMode = signal(false);
   showPending = signal(true);
   showSettled = signal(true);
-  mode: ProgressBarMode = 'determinate';
+  mode: ProgressBarMode = 'buffer';
   
   // Progress bar values computed from expense amounts
   value = computed(() => {
@@ -193,7 +200,7 @@ export class ExpensesComponent {
   
   bufferValue = computed(() => {
     const total = this.totalAmount();
-    return total > 0 ? ((this.totalSettledAmount() + this.totalDueAmount()) / total) * 100 : 100;
+    return total > 0 ? 100 : 0;
   });
   defaultValues = signal<IExpense>({
     id: '',
@@ -218,7 +225,7 @@ export class ExpensesComponent {
   });
   
   totalAmount = computed(() => {
-    return this.expenses().reduce((sum, expense) => sum + expense.amount, 0);
+    return this.totalDueAmount() + this.totalSettledAmount();
   });
 
   // Computed signal for filtered expenses
