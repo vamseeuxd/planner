@@ -17,6 +17,7 @@ import { AuthService } from '../auth/auth';
 import { User } from '@angular/fire/auth';
 import {MatDatepicker, MatDatepickerModule} from '@angular/material/datepicker';
 import {provideNativeDateAdapter} from '@angular/material/core';
+import {ProgressBarMode, MatProgressBarModule} from '@angular/material/progress-bar';
 
 // Constants for hardcoded values
 const CONSTANTS = {
@@ -57,6 +58,7 @@ interface IExpense {
     MatCheckboxModule,
     MatSnackBarModule,
     MatDatepickerModule,
+    MatProgressBarModule,
   ],
   providers: [provideNativeDateAdapter()],
   styleUrl: './expenses.scss',
@@ -69,18 +71,19 @@ interface IExpense {
         </mat-form-field>
         <button matButton="elevated" (click)="picker.open()">Month : {{ selectedMonth() | date : 'MMMM-yyyy' }}</button>
       </h3>
-      <h3 class="m-0 p-0 mb-5 h-box due-total">
-        Due ({{ constants.DEFAULT_COUNT }})<span class="ms-auto">
-          : {{ constants.DEFAULT_AMOUNT | currency : constants.CURRENCY }}</span>
-      </h3>
-      <h3 class="m-0 p-0 mb-5 h-box paid-total">
-        Paid ({{ constants.DEFAULT_COUNT }})<span class="ms-auto">
-          : {{ constants.DEFAULT_AMOUNT | currency : constants.CURRENCY }}</span>
-      </h3>
-      <h3 class="m-0 p-0 mb-5 h-box total-amount">
-        Total <span class="ms-auto">
-          : {{ constants.DEFAULT_AMOUNT | currency : constants.CURRENCY }}</span>
-      </h3>
+
+      <div class="h-box">        
+        <span class="due-total">Due <br/> {{ constants.DEFAULT_AMOUNT | currency : constants.CURRENCY }}</span>        
+        <span class="paid-total">Paid <br/> {{ constants.DEFAULT_AMOUNT | currency : constants.CURRENCY }}</span>
+        <span class="total-amount">Total <br/> {{ constants.DEFAULT_AMOUNT | currency : constants.CURRENCY }}</span>
+      </div>
+
+      <mat-progress-bar
+          [mode]="mode"
+          [value]="value"
+          [bufferValue]="bufferValue">
+      </mat-progress-bar>
+     
     </div>
     <mat-list role="list" class="mx-3 expnses-list">
       @for (item of filteredExpenses(); track item.id) {
@@ -180,6 +183,9 @@ export class ExpensesComponent {
   isEditMode = signal(false);
   showPending = signal(true);
   showSettled = signal(true);
+  mode: ProgressBarMode = 'determinate';
+  value = 50;
+  bufferValue = 75;
   defaultValues = signal<IExpense>({
     id: '',
     name: '',
