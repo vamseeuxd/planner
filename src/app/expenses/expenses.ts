@@ -164,12 +164,18 @@ interface IExpense {
         <mat-form-field appearance="outline" class="w-100 mb-10">
           <mat-label>Expense Due Date</mat-label>
           <input matInput required [matDatepicker]="dueDatePicker" [(ngModel)]="defaultValues().dueDate" name="dueDate" placeholder="Expense Due Date">
+          <button *ngIf="defaultValues().dueDate" matSuffix mat-icon-button aria-label="Clear" (click)="defaultValues().dueDate = ''">
+            <mat-icon>close</mat-icon>
+          </button>
           <mat-datepicker-toggle matIconSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
           <mat-datepicker touchUi #dueDatePicker></mat-datepicker>
         </mat-form-field>
         <mat-form-field appearance="outline" class="w-100 mb-10">
           <mat-label>Expense Settled Date</mat-label>
           <input matInput [matDatepicker]="settledDatePicker" [(ngModel)]="defaultValues().settledDate" name="settledDate" placeholder="Expense Settled Date">
+          <button *ngIf="defaultValues().settledDate" matSuffix mat-icon-button aria-label="Clear" (click)="defaultValues().settledDate = ''">
+            <mat-icon>close</mat-icon>
+          </button>
           <mat-datepicker-toggle matIconSuffix [for]="settledDatePicker"></mat-datepicker-toggle>
           <mat-datepicker touchUi #settledDatePicker></mat-datepicker>
         </mat-form-field>
