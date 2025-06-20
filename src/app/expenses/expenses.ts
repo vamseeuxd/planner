@@ -134,7 +134,7 @@ interface IExpense {
       }
     </mat-list>
 
-    <div class="h-box w-100 mt-10 mb-5 mx-3">
+    <div class="footer">
       <button matButton class="me-auto ms-10" (click)="openAddForm(editForm)">
         <mat-icon>add</mat-icon>
         Add
