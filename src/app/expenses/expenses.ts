@@ -69,7 +69,13 @@ interface IExpense {
           <input matInput [matDatepicker]="picker" [value]="selectedMonth()">
           <mat-datepicker touchUi #dp (monthSelected)="setMonthAndYear($event, dp)" startView="multi-year" #picker></mat-datepicker>
         </mat-form-field>
+        <button mat-icon-button (click)="goToPreviousMonth()">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
         <button matButton="elevated" (click)="picker.open()">Month : {{ selectedMonth() | date : 'MMMM-yyyy' }}</button>
+        <button mat-icon-button (click)="goToNextMonth()">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
       </h3>
 
       <div class="h-box">        
@@ -265,6 +271,20 @@ export class ExpensesComponent {
     this.selectedMonth.set(normalizedMonthAndYear);
     datepicker.close();
     // Fetch expenses for the newly selected month
+    this.fetchExpenses();
+  }
+
+  goToNextMonth() {
+    const currentMonth = new Date(this.selectedMonth());
+    const nextMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1);
+    this.selectedMonth.set(nextMonth);
+    this.fetchExpenses();
+  }
+
+  goToPreviousMonth() {
+    const currentMonth = new Date(this.selectedMonth());
+    const previousMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1);
+    this.selectedMonth.set(previousMonth);
     this.fetchExpenses();
   }
 
