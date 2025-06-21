@@ -27,12 +27,12 @@
   font-weight: 400;
   color: var(--text-warning-color);
 }
-.expnses-list {
+.expenses-list {
   overflow-y: auto;
   max-height: calc(100vh - 312px);
   min-height: calc(100vh - 312px);
 }
-.expnses-list-item {
+.expenses-list-item {
   height: auto !important;
   .due {
     color: var(--text-danger-color);

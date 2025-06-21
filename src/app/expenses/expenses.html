@@ -1,0 +1,213 @@
+<div class="mat-elevation-z2 py-4 px-8 mx-12 my-8">
+  <h3 class="m-0 p-0 mb-5 h-box w-100 month-title">
+    <mat-form-field class="example-full-width" style="display: none">
+      <input matInput [matDatepicker]="picker" [value]="selectedMonth()" />
+      <mat-datepicker
+        touchUi
+        #dp
+        (monthSelected)="setMonthAndYear($event, dp)"
+        startView="multi-year"
+        #picker
+      ></mat-datepicker>
+    </mat-form-field>
+    <button mat-icon-button (click)="goToPreviousMonth()">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <button matButton="elevated" (click)="picker.open()">
+      Month : {{ selectedMonth() | date : 'MMMM-yyyy' }}
+    </button>
+    <button mat-icon-button (click)="goToNextMonth()">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </h3>
+
+  <div class="h-box">
+    <span class="due-total"
+      >Due <br />
+      {{ totalDueAmount() | currency : constants.CURRENCY }}</span
+    >
+    <span class="paid-total"
+      >Paid <br />
+      {{ totalSettledAmount() | currency : constants.CURRENCY }}</span
+    >
+    <span class="total-amount"
+      >Total <br />
+      {{ totalAmount() | currency : constants.CURRENCY }}</span
+    >
+  </div>
+
+  <div class="progress-container">
+    <mat-progress-bar
+      class="expense-progress"
+      [mode]="mode"
+      [value]="value()"
+      [bufferValue]="bufferValue()"
+    >
+    </mat-progress-bar>
+    <div class="progress-labels">
+      <span class="settled-label">Settled: {{value().toFixed(0)}}%</span>
+      <span class="due-label">Due: {{(100 - value()).toFixed(0)}}%</span>
+    </div>
+  </div>
+</div>
+<mat-list role="list" class="mx-3 expenses-list">
+  @for (item of filteredExpenses(); track item.id) {
+  <mat-list-item role="listitem" class="expenses-list-item border-bottom">
+    <div class="h-box w-100">
+      <div class="v-box w-100">
+        <span class="fs-12 mt-8">{{ item.name }}</span>
+        <div class="v-box w-100 mb-8">
+          <span class="fs-8 mt-3 mb-3 due"
+            >DUE : {{ getData(item.dueDate) | date : 'dd-MMM-yyyy' }}</span
+          >
+          <span class="fs-8 mt-3 paid"
+            >PAID : {{ item.settledDate ? (getData(item.settledDate) | date :
+            'dd-MMM-yyyy') : 'NA' }}</span
+          >
+        </div>
+      </div>
+      <div class="ms-auto fs-12 total">
+        {{ item.amount | currency : constants.CURRENCY }}
+      </div>
+      <mat-icon [matMenuTriggerFor]="menu">more_vert</mat-icon>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="openEditForm(editForm, item)">
+          <mat-icon>edit</mat-icon>
+          <span>Edit</span>
+        </button>
+        <button mat-menu-item (click)="deleteExpense(item)">
+          <mat-icon>delete</mat-icon>
+          <span>Delete</span>
+        </button>
+        <button mat-menu-item (click)="openCloneForm(editForm, item)">
+          <mat-icon>file_copy</mat-icon>
+          <span>Clone</span>
+        </button>
+      </mat-menu>
+    </div>
+  </mat-list-item>
+  } @empty {
+  <li>There are no items.</li>
+  }
+</mat-list>
+
+<div class="footer">
+  <button matButton class="me-auto ms-10" (click)="openAddForm(editForm)">
+    <mat-icon>add</mat-icon>
+    Add
+  </button>
+  <mat-menu #filterList="matMenu">
+    <div mat-menu-item class="me-8 border-bottom">
+      <mat-checkbox
+        [ngModel]="showPending()"
+        (ngModelChange)="showPending.set($event)"
+        >Pending</mat-checkbox
+      >
+    </div>
+    <div mat-menu-item class="me-8">
+      <mat-checkbox
+        [ngModel]="showSettled()"
+        (ngModelChange)="showSettled.set($event)"
+        >Settled</mat-checkbox
+      >
+    </div>
+  </mat-menu>
+  <button matButton [matMenuTriggerFor]="filterList" class="ms-auto me-10">
+    Filters <mat-icon>filter_list</mat-icon>
+  </button>
+</div>
+
+<ng-template #editForm>
+  <h3 class="p-0 form-title">{{ formTitle() }}</h3>
+  <form #editExpenseForm="ngForm" autocomplete="off" class="v-box p-5">
+    <mat-form-field appearance="outline" class="w-100 mb-10">
+      <mat-label>Expense Title</mat-label>
+      <input
+        matInput
+        required
+        [(ngModel)]="defaultValues().name"
+        name="name"
+        type="text"
+        placeholder="Expense Title"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-100 mb-10">
+      <mat-label>Expense Due Date</mat-label>
+      <input
+        matInput
+        required
+        [matDatepicker]="dueDatePicker"
+        [(ngModel)]="defaultValues().dueDate"
+        name="dueDate"
+        placeholder="Expense Due Date"
+      />
+      <button
+        *ngIf="defaultValues().dueDate"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="defaultValues().dueDate = ''"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="dueDatePicker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker touchUi #dueDatePicker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-100 mb-10">
+      <mat-label>Expense Settled Date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="settledDatePicker"
+        [(ngModel)]="defaultValues().settledDate"
+        name="settledDate"
+        placeholder="Expense Settled Date"
+      />
+      <button
+        *ngIf="defaultValues().settledDate"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="defaultValues().settledDate = ''"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="settledDatePicker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker touchUi #settledDatePicker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-100 mb-10">
+      <mat-label>Expense Amount</mat-label>
+      <input
+        matInput
+        required
+        type="number"
+        [(ngModel)]="defaultValues().amount"
+        name="amount"
+        placeholder="Expense Amount"
+      />
+    </mat-form-field>
+    <div class="h-box w-100 mt-10">
+      <button
+        mat-raised-button
+        class="w-50"
+        (click)="editExpenseForm.resetForm({}); bottomSheet.dismiss()"
+      >
+        Close
+      </button>
+      <button
+        mat-raised-button
+        class="ms-10 w-50"
+        [disabled]="editExpenseForm.invalid"
+        color="primary"
+        (click)="save(editExpenseForm)"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</ng-template>
