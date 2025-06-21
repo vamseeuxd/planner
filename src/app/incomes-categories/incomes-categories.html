@@ -1,1 +1,87 @@
-<p>incomes-categories works!</p>
+<mat-list role="list" class="mx-3 incomes-list">
+  @for (item of incomesCategories(); track item.id) {
+  <mat-list-item role="listitem" class="incomes-list-item border-bottom">
+    <div class="h-box w-100">
+      <div class="v-box w-100">
+        <span class="fs-12 mt-8">{{ item.name }}</span>
+        <p class="fs-8 mb-8 mt-4" style="text-wrap: auto">
+          {{ item.descrition }}
+        </p>
+      </div>
+      <mat-icon [matMenuTriggerFor]="menu">more_vert</mat-icon>
+      <mat-menu #menu="matMenu">
+        <button
+          mat-menu-item
+          (click)="openEditForm(editIncomeCategoryForm, item)"
+        >
+          <mat-icon>edit</mat-icon>
+          <span>Edit</span>
+        </button>
+        <button mat-menu-item (click)="deleteIncome(item)">
+          <mat-icon>delete</mat-icon>
+          <span>Delete</span>
+        </button>
+      </mat-menu>
+    </div>
+  </mat-list-item>
+  } @empty {
+  <li>There are no items.</li>
+  }
+</mat-list>
+
+<div class="footer">
+  <button
+    matButton
+    class="me-auto ms-10"
+    (click)="openAddForm(editIncomeCategoryForm)"
+  >
+    <mat-icon>add</mat-icon>
+    Add
+  </button>
+</div>
+
+<ng-template #editIncomeCategoryForm>
+  <h3 class="p-0 form-title">{{ formTitle() }}</h3>
+  <form #editIncomeForm="ngForm" autocomplete="off" class="v-box p-5">
+    <mat-form-field appearance="outline" class="w-100 mb-10">
+      <mat-label>Income Category Name</mat-label>
+      <input
+        matInput
+        required
+        [(ngModel)]="defaultValues().name"
+        name="name"
+        type="text"
+        placeholder="Income Category Name"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-100 mb-10">
+      <mat-label>Income Category Descrition</mat-label>
+      <textarea
+        matInput
+        required
+        [(ngModel)]="defaultValues().descrition"
+        name="descrition"
+        type="text"
+        placeholder="Income Category Descrition"
+      ></textarea>
+    </mat-form-field>
+    <div class="h-box w-100 mt-10">
+      <button
+        mat-raised-button
+        class="w-50"
+        (click)="editIncomeForm.resetForm({}); bottomSheet.dismiss()"
+      >
+        Close
+      </button>
+      <button
+        mat-raised-button
+        class="ms-10 w-50"
+        [disabled]="editIncomeForm.invalid"
+        color="primary"
+        (click)="save(editIncomeForm)"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</ng-template>
