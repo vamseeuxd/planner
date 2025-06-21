@@ -43,6 +43,7 @@
   --dashboard-card-margin: 12px;
   --dashboard-corner-extra-small: 32px;
   --dashboard-card-title-bg-color: var(--color-red-100);
+  --dashboard-card-bg-color: var(--color-red-100);
   --dashboard-card-title-color: var(--color-gray-970);
 
   /* Text colors */
@@ -95,6 +96,7 @@
   --mat-form-field-outlined-error-hover-label-text-color: var(--color-red-700);
   --mat-form-field-outlined-hover-label-text-color: var(--color-gray-500);
   --mat-icon-button-icon-color: var(--color-gray-500);
+  --dashboard-card-title-height: 50%;
 }
 
 html,
@@ -118,7 +120,8 @@ body.dark-theme {
   --hover-background: var(--color-shadow-dark);
   --mat-sys-background: var(--color-gray-980);
   --mat-sys-surface-variant: var(--color-gray-950);
-  --dashboard-card-title-bg-color: rgba(30, 30, 30, 0.9);
+  --dashboard-card-title-bg-color: #0000009e;
+  --dashboard-card-bg-color: #515151;
   --dashboard-card-title-color: var(--color-gray-200);
   --title-color: var(--color-brown-300);
   --border-color: var(--color-gray-800);
@@ -152,7 +155,8 @@ body.light-theme {
   --hover-background: var(--color-shadow-light);
   --mat-sys-background: var(--color-white);
   --mat-sys-surface-variant: var(--color-gray-100);
-  --dashboard-card-title-bg-color: var(--color-red-100);
+  --dashboard-card-title-bg-color: #ffffffb0;
+  --dashboard-card-bg-color: var(--color-red-100);
   --dashboard-card-title-color: var(--color-gray-970);
   --title-color: var(--color-brown-500);
   --border-color: var(--color-brown-600);
