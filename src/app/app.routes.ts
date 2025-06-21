@@ -16,4 +16,6 @@ export const routes: Routes = [
   { canActivate: [authGuard], data:{title:'Chit-Fund'}, path: 'chit-fund', loadComponent: () => import('./chit-fund/chit-fund').then( (m) => m.ChitFund ), },
   { canActivate: [authGuard], data:{title:'Loans'}, path: 'loans', loadComponent: () => import('./loans/loans').then( (m) => m.Loans ), },
   { canActivate: [authGuard], data:{title:'Bank-Accounts'}, path: 'bank-accounts', loadComponent: () => import('./bank-accounts/bank-accounts').then( (m) => m.BankAccounts ), },
+  { canActivate: [authGuard], data:{title:'Expense Categories'}, path: 'expenses-categories', loadComponent: () => import('./expenses-categories/expenses-categories').then( (m) => m.ExpensesCategories ), },
+  { canActivate: [authGuard], data:{title:'Income Categories'}, path: 'incomes-categories', loadComponent: () => import('./incomes-categories/incomes-categories').then( (m) => m.IncomesCategories ), },
 ];
