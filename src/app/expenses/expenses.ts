@@ -37,6 +37,7 @@ const CONSTANTS = {
 interface IExpense {
   id: string;
   name: string;
+  email: string;
   amount: number;
   dueDate: Timestamp | string; // Can be Timestamp from Firestore or string in form
   settledDate: Timestamp | string | null; // Can be Timestamp from Firestore or string in form
@@ -224,6 +225,7 @@ export class ExpensesComponent {
     amount: 0,
     dueDate: '',
     settledDate: '',
+    email: ''
   });
   constants = CONSTANTS;
   
@@ -307,7 +309,7 @@ export class ExpensesComponent {
     return null;
   }
 
-  private async fetchExpenses() {
+  async fetchExpenses() {
     const id = this.loaderService.show();
     try {
       // Get the first day of the selected month
@@ -416,6 +418,7 @@ export class ExpensesComponent {
       amount: 0,
       dueDate: '',
       settledDate: '',
+      email: ''
     });
     this.bottomSheet.open(editForm);
   }
